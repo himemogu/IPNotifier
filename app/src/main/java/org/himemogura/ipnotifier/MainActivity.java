@@ -56,6 +56,17 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 			Toast.makeText(this, "checkAutoStart " + isChecked, Toast.LENGTH_SHORT).show();
 		} else if (buttonView == checkMonitor) {
 			Toast.makeText(this, "checkMonitor " + isChecked, Toast.LENGTH_SHORT).show();
+			if (isChecked) {
+				ScheduleManager.setSchedule(this);
+			} else {
+				ScheduleManager.cancelSchedule(this);
+			}
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		ScheduleManager.cancelSchedule(this);
 	}
 }
