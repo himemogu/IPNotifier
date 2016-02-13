@@ -38,10 +38,10 @@ public class IPCheckService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 		wakelock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, PM_TAG);
-//		try {
-//			wakelock.acquire();
-//		} catch (Exception e) {
-//		}
+		try {
+			wakelock.acquire();
+		} catch (Exception e) {
+		}
 
 		String html = getHtml(URL);
 
@@ -54,9 +54,9 @@ public class IPCheckService extends Service {
 				}
 
 				try {
-//					if (wakelock != null) {
-//						wakelock.release();
-//					}
+					if (wakelock != null) {
+						wakelock.release();
+					}
 				} catch (Exception e) {
 				}
 			}
