@@ -43,11 +43,16 @@ public class IPCheckService extends Service {
 		} catch (Exception e) {
 		}
 
-		String html = getHtml(URL);
-
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				try {
+					Thread.sleep(8000);
+				} catch (InterruptedException e) {
+				}
+
+				getHtml(URL);
+
 				try {
 					Thread.sleep(5000);
 				} catch (InterruptedException e) {
@@ -66,25 +71,19 @@ public class IPCheckService extends Service {
 	}
 
 	private String getHtml(final String urlStrig) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				Log.d(TAG, "run");
-				try {
-					URL url = new URL(urlStrig);
-					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-					conn.setReadTimeout(10000);
-					conn.setConnectTimeout(15000);
-					conn.setRequestMethod("GET");
-					conn.setDoInput(true);
-					conn.connect();
-					String result = readIt(conn.getInputStream());
-					onResultHttp(result);
-				} catch (Exception ex) {
-					System.out.println(ex);
-				}
-			}
-		}).start();
+		try {
+			URL url = new URL(urlStrig);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setReadTimeout(10000);
+			conn.setConnectTimeout(15000);
+			conn.setRequestMethod("GET");
+			conn.setDoInput(true);
+			conn.connect();
+			String result = readIt(conn.getInputStream());
+			onResultHttp(result);
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
 		return "";
 	}
 
@@ -94,10 +93,10 @@ public class IPCheckService extends Service {
 		html = Util.seekWord(html, "<div");
 		html = Util.seekWord(html, ">");
 		String ip = Util.getBefoerWord(html, "</div>").trim();
-		Log.d(TAG, ip);
+
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		String ipAddr = pref.getString(PREF_IPADDR, "");
-		if (ipAddr.equals(ip)) {
+		if (ipAddr.equals(ip) || "</div>".equals(ip)) {
 			Mail.sebdMail("pri-ed ip 通知", ip);
 		} else {
 			Mail.sebdMail("pri-ed ip 変更通知", ip);
