@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
@@ -41,6 +42,11 @@ public class IPCheckService extends Service {
 		try {
 			wakelock.acquire();
 		} catch (Exception e) {
+		}
+
+		WifiManager wifi = (WifiManager) getSystemService(WIFI_SERVICE);
+		if (!wifi.isWifiEnabled()) {
+			wifi.setWifiEnabled(true);
 		}
 
 		new Thread(new Runnable() {
