@@ -1,9 +1,11 @@
 package org.himemogura.ipnotifier;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -22,6 +24,8 @@ import java.net.URL;
 public class IPCheckService extends Service {
 	public static final String TAG = "IPNotifier";
 	public static final String URL = "https://www.cman.jp/network/support/go_access.cgi";
+	public static final String PM_TAG = "IPCheckService_PM_TAG";
+	private PowerManager.WakeLock wakelock;
 	private static final String PREF_IPADDR = "PREF_IPADDR";
 
 
@@ -32,7 +36,32 @@ public class IPCheckService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+		wakelock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, PM_TAG);
+//		try {
+//			wakelock.acquire();
+//		} catch (Exception e) {
+//		}
+
 		String html = getHtml(URL);
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+				}
+
+				try {
+//					if (wakelock != null) {
+//						wakelock.release();
+//					}
+				} catch (Exception e) {
+				}
+			}
+		}).start();
+
 		return START_STICKY;
 	}
 
