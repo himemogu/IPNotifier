@@ -67,6 +67,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		ScheduleManager.cancelSchedule(this);
+//		ScheduleManager.cancelSchedule(this);
 	}
 }
