@@ -38,20 +38,26 @@ public class IPCheckService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-		wakelock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, PM_TAG);
+		wakelock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK| PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, PM_TAG);
+//		wakelock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, PM_TAG);
 		try {
 			wakelock.acquire();
 		} catch (Exception e) {
 		}
 
-		WifiManager wifi = (WifiManager) getSystemService(WIFI_SERVICE);
-		if (!wifi.isWifiEnabled()) {
-			wifi.setWifiEnabled(true);
-		}
-
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+				}
+
+				WifiManager wifi = (WifiManager) getSystemService(WIFI_SERVICE);
+				if (!wifi.isWifiEnabled()) {
+					wifi.setWifiEnabled(true);
+				}
+
 				try {
 					Thread.sleep(8000);
 				} catch (InterruptedException e) {

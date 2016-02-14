@@ -24,7 +24,7 @@ public class ScheduleManager {
 					intent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 //			long delay = 60 * 60 * 1000; // 1時間間隔で定期的に処理を行う
-			long delay = 10 * 60 * 1000; // 1時間間隔で定期的に処理を行う
+			long delay = 3 * 60 * 1000; // 1時間間隔で定期的に処理を行う
 			am.setRepeating(AlarmManager.RTC, time, delay, p);
 		}
 	}
