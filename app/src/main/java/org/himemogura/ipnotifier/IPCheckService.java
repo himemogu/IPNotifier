@@ -38,8 +38,8 @@ public class IPCheckService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-		wakelock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK| PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, PM_TAG);
-//		wakelock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, PM_TAG);
+//		wakelock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK| PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, PM_TAG);
+		wakelock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, PM_TAG);
 		try {
 			wakelock.acquire();
 		} catch (Exception e) {
